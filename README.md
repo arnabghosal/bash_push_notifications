@@ -10,7 +10,7 @@ This repository contains Bash Scripts that can be used for sending Push Notifica
 ### Installation
 - Download and Set execute permission
 ```shell
-wget 
+wget https://raw.githubusercontent.com/arnabghosal/bash_push_notifications/master/notif_pushover.sh
 chmod +x notif_pushover.sh
 ```
 ### Usage
