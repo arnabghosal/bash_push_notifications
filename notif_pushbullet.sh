@@ -30,18 +30,11 @@ function err_user
 	exit 1
 }
 
-function err_app
-{
-	echo "ERROR: Application Token not specified. Use -a or --app and specify a value"
-	exit 1
-}
-
 function usage
 {
 	echo "Valid Arguments"
 	echo "-h|--help  : Show help text"
 	echo "-u|--user  : Set User Token"
-	echo "-a|--app   : Set Application Token"
 	echo "-m|--msg   : Set Message"
 	echo "-t|--title : Set Title"
 	exit 1
@@ -49,11 +42,11 @@ function usage
 
 function help
 {
-	echo "Bash Script to Send Pushover Notification"
+	echo "Bash Script to Send Pushbullet Notification"
 	usage
 }
 
-PO_URL="https://api.pushover.net/1/messages.json"
+PB_URL="https://api.pushbullet.com/v2/pushes"
 if [[ -f ~/.push.rc ]]
 then
 	source ~/.push.rc
@@ -65,7 +58,7 @@ do
 		-m|--msg)
 			if [[ -n "${2}" ]]
 			then
-				PO_MSG="${2}"
+				PB_MSG="${2}"
 				shift
 			else
 				err_msg
@@ -74,7 +67,7 @@ do
 		-t|--title)
 			if [[ -n "${2}" ]]
 			then
-				PO_TTL="${2}"
+				PB_TTL="${2}"
 				shift
 			else
 				err_title
@@ -83,19 +76,10 @@ do
 		-u|--user)
 			if [[ -n "${2}" ]]
 			then
-				PO_USR="${2}"
+				PB_USR="${2}"
 				shift
 			else
 				err_user
-			fi
-		;;
-		-a|--app)
-			if [[ -n "${2}" ]]
-			then
-				PO_APP="${2}"
-				shift
-			else
-				err_app
 			fi
 		;;
 		-h|--help)
@@ -115,16 +99,18 @@ do
 	shift
 done
 
-if [[ -z "${PO_MSG}" ]]
+if [[ -z "${PB_MSG}" ]]
 then
 	err_msg
 fi
 
-if [[ -z "${PO_TTL}" ]]
+if [[ -z "${PB_TTL}" ]]
 then
 	err_title
 fi
 
-curl -s --data token="${PO_APP}"  --data user="${PO_USR}"  --data-urlencode title="${PO_TTL}" --data-urlencode message="${PO_MSG}" "${PO_URL}" > /dev/null
+json='{"type":"note","body":"'${PB_MSG}'","title":"'${PB_TTL}'"}'
+
+curl -s --header "Access-Token: ${PB_USR}" --header "Content-Type: application/json" --data-binary "${json}" --request POST "${PB_URL}" > /dev/null
 
 exit 0
