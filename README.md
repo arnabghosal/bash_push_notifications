@@ -66,7 +66,7 @@ User and Application token are by default referenced from config file and can be
 ### Config File
 Location - ~/.push.rc
 ```shell
-PB_USR=""  # Pushover User Token
+PB_USR=""  # Pushbullet User Token
 ```
 
 ### Sample Usage
