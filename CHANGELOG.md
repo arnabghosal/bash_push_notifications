@@ -1,6 +1,6 @@
 ### Version : 0.1.4  (20/Dec/2015)
 Added
-- Ability to send URL's
+- Use -l / --lnk parameter to send URL Link
 
 ### Version : 0.1.3  (15/Dec/2015)
 Added
