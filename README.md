@@ -6,8 +6,8 @@ This repository contains Bash Scripts that can be used for sending Push Notifica
 - [Pushbullet](https://www.pushbullet.com)
 
 ## Pushover
-- Latest Version : **0.1.0**
-- Release Date : 28-Nov-2015
+- Latest Version : **0.1.4**
+- Release Date : 20-Dec-2015
 
 ### Installation
 - Download and Set execute permission
@@ -25,6 +25,7 @@ Valid Arguments
 -a|--app   : Set Application Token
 -m|--msg   : Set Message
 -t|--title : Set Title
+-l|--link  : Set URL Link
 ```
 User and Application token are by default referenced from config file and can be overwritten by passing the necessary argument
 
@@ -33,6 +34,7 @@ Location - ~/.push.rc
 ```shell
 PO_USR=""  # Pushover User Token
 PO_APP=""  # Pushover Application Token
+PO_URL="https://api.pushover.net/1/messages.json"
 ```
 
 ### Sample Usage
@@ -43,8 +45,8 @@ _To do_
 - Pushover APP
 
 ## Pushbullet
-- Latest Version : **0.1.0**
-- Release Date : 28-Nov-2015
+- Latest Version : **0.1.4**
+- Release Date : 20-Dec-2015
 
 ### Installation
 - Download and Set execute permission
@@ -60,6 +62,7 @@ Valid Arguments
 -u|--user  : Set User Token
 -m|--msg   : Set Message
 -t|--title : Set Title
+-l|--link  : Set URL Link
 ```
 User and Application token are by default referenced from config file and can be overwritten by passing the necessary argument
 
@@ -67,6 +70,7 @@ User and Application token are by default referenced from config file and can be
 Location - ~/.push.rc
 ```shell
 PB_USR=""  # Pushbullet User Token
+PB_URL="https://api.pushbullet.com/v2/pushes"
 ```
 
 ### Sample Usage

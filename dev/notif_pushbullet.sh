@@ -2,10 +2,10 @@
 #Author  : Arnab Ghosal
 #GIT URL : https://github.com/arnabghosal/bash_push_notifications
 #Created : 28-Nov-2015
-#Updated : 28-Nov-2015
-#Version : 0.1.2
+#Updated : 20-Dec-2015
+#Version : 0.1.4
 
-_ver=0.1.2
+_ver=0.1.4
 
 curl > /dev/null 2> /dev/null
 if [[ $? -eq 127 ]]
@@ -32,6 +32,12 @@ function err_user
 	exit 1
 }
 
+function err_lnk
+{
+	echo "ERROR: URL Link not specified. Use -l or --link and specify a value"
+	exit 1
+}
+
 function usage
 {
 	echo "Valid Arguments"
@@ -39,6 +45,7 @@ function usage
 	echo "-u|--user  : Set User Token"
 	echo "-m|--msg   : Set Message"
 	echo "-t|--title : Set Title"
+	echo "-l|--link  : Set URL Link"
 	exit 1
 }
 
@@ -53,6 +60,12 @@ PB_URL="https://api.pushbullet.com/v2/pushes"
 if [[ -f ~/.push.rc ]]
 then
 	source ~/.push.rc
+fi
+
+if [[ $# -eq 0 ]]
+then
+	echo "No arguments provided"
+	usage
 fi
 
 while :
@@ -85,12 +98,22 @@ do
 				err_user
 			fi
 		;;
-		-h|--help)
-			help
-		;;
+		-l|--link)
+			if [[ -n "${2}" ]]
+			then
+				PB_LNK="${2}"
+				lnk=true
+				shift
+			else
+				err_lnk
+			fi
+		;;		
 		--ver)
 			echo "Version - ${_ver}"
 			exit 1
+		;;
+		-h|--help)
+			help
 		;;
 		--)
 			break
@@ -116,7 +139,17 @@ then
 	err_title
 fi
 
-json='{"type":"note","body":"'${PB_MSG}'","title":"'${PB_TTL}'"}'
+if [[ -z "${PB_LNK}" && "${lnk}" == "true" ]]
+then
+	err_lnk
+fi
+
+if [[ "${lnk}" == "true" ]]
+then
+	json='{"type":"link","body":"'${PB_MSG}'","title":"'${PB_TTL}'","url":"'${PB_LNK}'"}'
+else
+	json='{"type":"note","body":"'${PB_MSG}'","title":"'${PB_TTL}'"}'
+fi
 
 curl -s --header "Access-Token: ${PB_USR}" --header "Content-Type: application/json" --data-binary "${json}" --request POST "${PB_URL}" > /dev/null
 
